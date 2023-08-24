@@ -3,10 +3,14 @@ package com.kzkg1216.develop.mytestapplication002.presentation.welcome
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,9 +51,13 @@ fun WelcomeScreenState(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WelcomeScreen(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
+        .padding(top = 8.dp),
     state: WelcomeUiState.Success = WelcomeUiState.Success.DEFAULT,
     navigateToDebug: () -> Unit = {  },
     navigateToSettings: () -> Unit = {  },
@@ -58,43 +66,46 @@ fun WelcomeScreen(
 ) {
 
     if (!state.isLoading) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
 
-            Button(
-                modifier = modifier.fillMaxWidth(),
-                onClick = { navigateToRegister() }
+        CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text("Register")
-            }
+                Button(
+                    modifier = modifier,
+                    onClick = { navigateToRegister() }
+                ) {
 
-            Button(
-                modifier = modifier.fillMaxWidth(),
-                onClick = { navigateToLogin() }
-            ) {
+                    Text("Register")
+                }
 
-                Text("Login")
-            }
+                Button(
+                    modifier = modifier,
+                    onClick = { navigateToLogin() }
+                ) {
 
-            Button(
-                modifier = modifier.fillMaxWidth(),
-                onClick = { navigateToDebug() }
-            ) {
+                    Text("Login")
+                }
 
-                Text("Debug")
-            }
+                Button(
+                    modifier = modifier,
+                    onClick = { navigateToDebug() }
+                ) {
 
-            Button(
-                modifier = modifier.fillMaxWidth(),
-                onClick = { navigateToSettings() }
-            ) {
+                    Text("Debug")
+                }
 
-                Text("Settings")
+                Button(
+                    modifier = modifier,
+                    onClick = { navigateToSettings() }
+                ) {
+
+                    Text("Settings")
+                }
             }
         }
     } else {

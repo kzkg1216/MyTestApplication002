@@ -3,10 +3,14 @@ package com.kzkg1216.develop.mytestapplication002.presentation.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,29 +33,42 @@ fun SettingsScreenState(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
+        .padding(top = 8.dp),
     state: SettingsUiState.Success = SettingsUiState.Success.DEFAULT,
     navigateToWelcome: () -> Unit = {  }
 ) {
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Button(
-            modifier = modifier.fillMaxWidth(),
-            onClick = { navigateToWelcome() }
+    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Welcome")
-        }
 
-        Text(text = "Settings Screen!")
-        Text(text = "Debug mode: ${state.isDebugging}")
+            Button(
+                modifier = modifier,
+                onClick = { navigateToWelcome() }
+            ) {
+                Text(text = "Welcome")
+            }
+
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                text = "Settings Screen!"
+            )
+
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                text = "Debug mode: ${state.isDebugging}"
+            )
+        }
     }
 }
 
