@@ -25,6 +25,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setDebugMode(enable: Boolean) {
+        viewModelScope.launch {
+            editDebugSettingsUseCase.saveDebugMode(enable)
+        }
+    }
+
     fun getDebugMode() {
         viewModelScope.launch {
             editDebugSettingsUseCase.loadDebugMode().collectLatest {

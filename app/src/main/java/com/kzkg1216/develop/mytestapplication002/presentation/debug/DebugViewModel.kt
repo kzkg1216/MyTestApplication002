@@ -20,6 +20,8 @@ class DebugViewModel @Inject constructor(
 
     init {
         getDebugMode()
+        getRegisterStatus()
+        getLoginStatus()
     }
 
     fun getDebugMode() {
@@ -35,6 +37,38 @@ class DebugViewModel @Inject constructor(
     fun setDebugMode(enable: Boolean) {
         viewModelScope.launch {
             editDebugSettingsUseCase.saveDebugMode(enable)
+        }
+    }
+
+    fun getRegisterStatus() {
+        viewModelScope.launch {
+            editDebugSettingsUseCase.loadRegisterStatus().collectLatest {
+                _uiState.value = (uiState.value as DebugUiState.Success).copy(
+                    isRegistered = it
+                )
+            }
+        }
+    }
+
+    fun setRegisterStatus(status: Boolean) {
+        viewModelScope.launch {
+            editDebugSettingsUseCase.saveRegisterStatus(status)
+        }
+    }
+
+    fun getLoginStatus() {
+        viewModelScope.launch {
+            editDebugSettingsUseCase.loadLoginStatus().collectLatest {
+                _uiState.value = (uiState.value as DebugUiState.Success).copy(
+                    isLoggedIn = it
+                )
+            }
+        }
+    }
+
+    fun setLoginStatus(status: Boolean) {
+        viewModelScope.launch {
+            editDebugSettingsUseCase.saveLoginStatus(status)
         }
     }
 }

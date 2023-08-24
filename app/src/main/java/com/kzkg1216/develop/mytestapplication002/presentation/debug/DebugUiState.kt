@@ -6,13 +6,17 @@ sealed class DebugUiState {
 
     data class Success(
         val isLoading: Boolean,
-        val isDebugging: Boolean
+        val isDebugging: Boolean,
+        val isRegistered: Boolean,
+        val isLoggedIn: Boolean
     ): DebugUiState() {
 
         companion object {
             val DEFAULT = Success(
                 isLoading = false,
-                isDebugging = false
+                isDebugging = false,
+                isRegistered = false,
+                isLoggedIn = false
             )
         }
     }

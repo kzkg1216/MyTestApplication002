@@ -22,4 +22,30 @@ class SettingsRepositoryImpl constructor(
             preferences[SettingsPreferencesKeys.DEBUG_MODE_KEY] ?: false
         }
     }
+
+    override suspend fun saveRegisterStatus(status: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[SettingsPreferencesKeys.REGISTER_STATUS_KEY] = status
+        }
+    }
+
+    override suspend fun loadRegisterStatus(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[SettingsPreferencesKeys.REGISTER_STATUS_KEY] ?: false
+        }
+    }
+
+    override suspend fun saveLoginStatus(status: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[SettingsPreferencesKeys.LOGIN_STATUS_KEY] = status
+        }
+    }
+
+    override suspend fun loadLoginStatus(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[SettingsPreferencesKeys.LOGIN_STATUS_KEY] ?: false
+        }
+    }
+
+
 }

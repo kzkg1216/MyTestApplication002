@@ -13,4 +13,20 @@ class EditDebugSettingsUseCase constructor(
     suspend fun saveDebugMode(enable: Boolean) {
         settingsRepository.saveDebugMode(enable)
     }
+
+    suspend fun loadRegisterStatus(): Flow<Boolean> {
+        return settingsRepository.loadRegisterStatus()
+    }
+
+    suspend fun saveRegisterStatus(status: Boolean) {
+        settingsRepository.saveRegisterStatus(status)
+    }
+
+    suspend fun loadLoginStatus(): Flow<Boolean> {
+        return settingsRepository.loadLoginStatus()
+    }
+
+    suspend fun saveLoginStatus(status: Boolean) {
+        settingsRepository.saveLoginStatus(status)
+    }
 }

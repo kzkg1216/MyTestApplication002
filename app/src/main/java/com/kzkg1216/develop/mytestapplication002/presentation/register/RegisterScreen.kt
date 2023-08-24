@@ -1,11 +1,14 @@
 package com.kzkg1216.develop.mytestapplication002.presentation.register
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
@@ -30,8 +33,11 @@ fun RegisterScreenState(
 
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
+    val scrollState = rememberScrollState()
+
     RegisterScreen(
         state = state.value as RegisterUiState.Success,
+        scrollState = scrollState,
         updateEmail = { viewModel.updateEmail(it) },
         updatePassword = { viewModel.updatePassword(it) },
         navigateToWelcome = navigateToWelcome,
@@ -47,6 +53,7 @@ fun RegisterScreen(
         .height(56.dp)
         .padding(top = 8.dp),
     state: RegisterUiState.Success = RegisterUiState.Success.DEFAULT,
+    scrollState: ScrollState = ScrollState(0),
     updateEmail: (email: String) -> Unit = {  },
     updatePassword: (password: String) -> Unit = {  },
     navigateToWelcome: () -> Unit = {  },
@@ -58,7 +65,8 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(8.dp)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

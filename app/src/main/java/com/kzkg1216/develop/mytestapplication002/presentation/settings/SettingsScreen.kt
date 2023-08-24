@@ -1,10 +1,13 @@
 package com.kzkg1216.develop.mytestapplication002.presentation.settings
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
@@ -18,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kzkg1216.develop.mytestapplication002.presentation.parts.LoadingScreen
+import com.kzkg1216.develop.mytestapplication002.presentation.parts.SettingsItem
 
 @Composable
 fun SettingsScreenState(
@@ -27,45 +31,67 @@ fun SettingsScreenState(
 
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
+    val scrollState = rememberScrollState()
+
     SettingsScreen(
         state = state.value as SettingsUiState.Success,
-        navigateToWelcome = navigateToWelcome
+        scrollState = scrollState,
+        navigateToWelcome = navigateToWelcome,
+        setDebugMode = { viewModel.setDebugMode(it) }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier = modifier
         .fillMaxWidth()
         .height(56.dp)
         .padding(top = 8.dp),
     state: SettingsUiState.Success = SettingsUiState.Success.DEFAULT,
-    navigateToWelcome: () -> Unit = {  }
+    scrollState: ScrollState = ScrollState(0),
+    navigateToWelcome: () -> Unit = {  },
+    setDebugMode: (enable: Boolean) -> Unit = {  }
 ) {
 
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(8.dp)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Button(
-                modifier = modifier,
+                modifier = buttonModifier,
                 onClick = { navigateToWelcome() }
             ) {
                 Text(text = "Welcome")
             }
 
+            Column(
+                modifier = modifier.fillMaxWidth().padding(vertical = 8.dp)
+            ) {
+                SettingsItem(
+                    text = "Debug mode",
+                    checkedState = state.isDebugging,
+                    updateState = { setDebugMode(it) }
+                )
+            }
+
             Text(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
                 text = "Settings Screen!"
             )
 
             Text(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
                 text = "Debug mode: ${state.isDebugging}"
             )
         }

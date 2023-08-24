@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kzkg1216.develop.mytestapplication002"
-        minSdk = 30
+        minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

@@ -1,5 +1,6 @@
 package com.kzkg1216.develop.mytestapplication002.presentation.navigation
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideIn
@@ -25,10 +26,10 @@ fun NavGraph() {
     NavHost(
         navController = navController,
         startDestination = Destination.WELCOME_ROUTE,
-        enterTransition = { slideIn { fullSize -> IntOffset(fullSize.width, 0) } },
-        popEnterTransition = { slideIn { fullSize -> IntOffset(-fullSize.width, 0) } },
-        exitTransition = { slideOut { fullSize -> IntOffset(-fullSize.width, 0) } },
-        popExitTransition = { slideOut() { fullSize -> IntOffset(fullSize.width, 0) } }
+        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(400)) },
+        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(400))  },
+        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(400)) },
+        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(400)) }
     ) {
 
         composable(
