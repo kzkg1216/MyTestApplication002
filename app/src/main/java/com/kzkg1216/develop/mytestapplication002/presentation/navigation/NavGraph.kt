@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kzkg1216.develop.mytestapplication002.presentation.bluetooth.BluetoothScreenState
 import com.kzkg1216.develop.mytestapplication002.presentation.debug.DebugScreenState
 import com.kzkg1216.develop.mytestapplication002.presentation.login.LoginScreenState
 import com.kzkg1216.develop.mytestapplication002.presentation.register.RegisterScreenState
@@ -40,7 +41,8 @@ fun NavGraph() {
                 navigateToDebug = { navController.navigateToDebug(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) },
                 navigateToSettings = { navController.navigateToSettings(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) },
                 navigateToRegister = { navController.navigateToRegister(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) },
-                navigateToLogin = { navController.navigateToLogin(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) }
+                navigateToLogin = { navController.navigateToLogin(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) },
+                navigateToBluetooth = { navController.navigateToBluetooth(popUpToDestination = Destination.WELCOME_ROUTE, inclusive = false) }
             )
         }
 
@@ -79,6 +81,15 @@ fun NavGraph() {
                 viewModel = hiltViewModel(),
                 navigateToWelcome = { navController.navigateUp() },
                 navigateToRegister = { navController.navigateToRegister(popUpToDestination = Destination.LOGIN_ROUTE) }
+            )
+        }
+
+        composable(
+            route = Destination.BLUETOOTH_ROUTE
+        ) {
+            BluetoothScreenState(
+                viewModel = hiltViewModel(),
+                navigateToWelcome = { navController.navigateUp() }
             )
         }
     }
@@ -134,6 +145,18 @@ fun NavController.navigateToRegister(
 
 fun NavController.navigateToLogin(
     destination: String = Destination.LOGIN_ROUTE,
+    popUpToDestination: String,
+    inclusive: Boolean = true
+) {
+    this.navigate(destination) {
+        popUpTo(popUpToDestination) {
+            this.inclusive = inclusive
+        }
+    }
+}
+
+fun NavController.navigateToBluetooth(
+    destination: String = Destination.BLUETOOTH_ROUTE,
     popUpToDestination: String,
     inclusive: Boolean = true
 ) {

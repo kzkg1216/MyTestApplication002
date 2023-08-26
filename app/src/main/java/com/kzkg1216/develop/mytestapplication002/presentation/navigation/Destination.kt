@@ -7,4 +7,6 @@ object Destination {
     const val DEBUG_ROUTE = "debug"
     const val REGISTER_ROUTE = "register"
     const val LOGIN_ROUTE = "login"
+    
+    const val BLUETOOTH_ROUTE = "bluetooth"
 }

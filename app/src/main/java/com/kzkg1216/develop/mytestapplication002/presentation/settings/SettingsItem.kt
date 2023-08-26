@@ -1,4 +1,4 @@
-package com.kzkg1216.develop.mytestapplication002.presentation.parts
+package com.kzkg1216.develop.mytestapplication002.presentation.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

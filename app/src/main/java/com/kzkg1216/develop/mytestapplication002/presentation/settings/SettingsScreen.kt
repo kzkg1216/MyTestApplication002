@@ -14,14 +14,11 @@ import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kzkg1216.develop.mytestapplication002.presentation.parts.LoadingScreen
-import com.kzkg1216.develop.mytestapplication002.presentation.parts.SettingsItem
 
 @Composable
 fun SettingsScreenState(

@@ -29,7 +29,8 @@ fun WelcomeScreenState(
     navigateToDebug: () -> Unit,
     navigateToSettings: () -> Unit,
     navigateToRegister: () -> Unit,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToBluetooth: () -> Unit
 ) {
 
     val state = viewModel.uiState.collectAsStateWithLifecycle()
@@ -51,7 +52,8 @@ fun WelcomeScreenState(
                 navigateToDebug = navigateToDebug,
                 navigateToSettings = navigateToSettings,
                 navigateToRegister = navigateToRegister,
-                navigateToLogin = navigateToLogin
+                navigateToLogin = navigateToLogin,
+                navigateToBluetooth = navigateToBluetooth
             )
         }
     }
@@ -67,7 +69,8 @@ fun WelcomeScreen(
     navigateToDebug: () -> Unit = {  },
     navigateToSettings: () -> Unit = {  },
     navigateToRegister: () -> Unit = {  },
-    navigateToLogin: () -> Unit = {  }
+    navigateToLogin: () -> Unit = {  },
+    navigateToBluetooth: () -> Unit = {  }
 ) {
 
     if (!state.isLoading) {
@@ -111,6 +114,14 @@ fun WelcomeScreen(
                 ) {
 
                     Text("Settings")
+                }
+
+                Button(
+                    modifier = buttonModifier,
+                    onClick = { navigateToBluetooth() }
+                ) {
+
+                    Text("Bluetooth")
                 }
             }
         }
