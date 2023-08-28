@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -49,7 +50,10 @@ fun DebugScreenState(
 @Composable
 fun DebugScreen(
     modifier: Modifier = Modifier,
-    buttonModifier: Modifier = modifier.fillMaxWidth().height(56.dp).padding(top = 8.dp),
+    buttonModifier: Modifier = modifier
+        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+        .fillMaxWidth()
+        .height(56.dp),
     state: DebugUiState.Success = DebugUiState.Success.DEFAULT,
     scrollState: ScrollState = ScrollState(0),
     navigateToWelcome: () -> Unit = {  },
@@ -59,90 +63,93 @@ fun DebugScreen(
 ) {
 
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-                .verticalScroll(scrollState),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Button(
+                    modifier = buttonModifier,
+                    onClick = { navigateToWelcome() }
+                ) {
+                    Text(text = "Welcome")
+                }
 
-            Button(
-                modifier = buttonModifier,
-                onClick = { navigateToWelcome() }
-            ) {
-                Text(text = "Welcome")
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setDebugMode(true) }
+                ) {
+                    Text(text = "Debug mode ON")
+                }
+
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setDebugMode(false) }
+                ) {
+                    Text(text = "Debug mode OFF")
+                }
+
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setRegisterStatus(true) }
+                ) {
+                    Text(text = "Register status ON")
+                }
+
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setRegisterStatus(false) }
+                ) {
+                    Text(text = "Register status OFF")
+                }
+
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setLoginStatus(true) }
+                ) {
+                    Text(text = "Login status ON")
+                }
+
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { setLoginStatus(false) }
+                ) {
+                    Text(text = "Login status OFF")
+                }
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Debug Screen!"
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Debug mode: ${state.isDebugging}"
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Register status: ${state.isRegistered}"
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Login status: ${state.isLoggedIn}"
+                )
             }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setDebugMode(true) }
-            ) {
-                Text(text = "Debug mode ON")
-            }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setDebugMode(false) }
-            ) {
-                Text(text = "Debug mode OFF")
-            }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setRegisterStatus(true) }
-            ) {
-                Text(text = "Register status ON")
-            }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setRegisterStatus(false) }
-            ) {
-                Text(text = "Register status OFF")
-            }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setLoginStatus(true) }
-            ) {
-                Text(text = "Login status ON")
-            }
-
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { setLoginStatus(false) }
-            ) {
-                Text(text = "Login status OFF")
-            }
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Debug Screen!"
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Debug mode: ${state.isDebugging}"
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Register status: ${state.isRegistered}"
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Login status: ${state.isLoggedIn}"
-            )
         }
     }
 }

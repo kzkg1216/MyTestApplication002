@@ -21,10 +21,4 @@ object BluetoothModule {
         val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         return bluetoothManager.adapter
     }
-
-    @Provides
-    @Singleton
-    fun provideBluetoothLeScanner(bluetoothAdapter: BluetoothAdapter): BluetoothLeScanner {
-        return bluetoothAdapter.bluetoothLeScanner
-    }
 }

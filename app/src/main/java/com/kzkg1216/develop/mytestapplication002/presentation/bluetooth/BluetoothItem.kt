@@ -1,30 +1,30 @@
-package com.kzkg1216.develop.mytestapplication002.presentation.settings
+package com.kzkg1216.develop.mytestapplication002.presentation.bluetooth
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsItem(
+fun BluetoothItem(
     modifier: Modifier = Modifier,
-    text: String = "",
-    checkedState: Boolean = false,
-    updateState: (enable: Boolean) -> Unit = {  }
+    name: String,
+    address: String,
+    rssi: String,
+    onClick: () -> Unit = {  }
 ) {
 
     Row(
@@ -34,7 +34,7 @@ fun SettingsItem(
             .fillMaxWidth()
             .height(64.dp)
             .clickable(
-                onClick = { updateState(!checkedState) },
+                onClick = { onClick() },
                 indication = rememberRipple(bounded = true),
                 interactionSource = remember { MutableInteractionSource() }
             )
@@ -43,22 +43,12 @@ fun SettingsItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Text(
-            modifier = modifier,
-            text = text
-        )
-
-        Switch(
-            checked = checkedState,
-            onCheckedChange = { updateState(it) }
-        )
+        Column(
+            modifier = modifier
+        ) {
+            Text(text = "Device Name: $name")
+            Text(text = "Device Address: $address")
+            Text(text = "RSSI: $rssi dBm")
+        }
     }
-}
-
-@Preview
-@Composable
-fun SettingsItemPreview() {
-    SettingsItem(
-        text = "Preview"
-    )
 }

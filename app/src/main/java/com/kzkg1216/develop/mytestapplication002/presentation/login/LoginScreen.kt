@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -47,7 +48,10 @@ fun LoginScreenState(
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    buttonModifier: Modifier = modifier.fillMaxWidth().height(56.dp).padding(top = 8.dp),
+    buttonModifier: Modifier = modifier
+        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+        .fillMaxWidth()
+        .height(56.dp),
     state: LoginUiState.Success = LoginUiState.Success.DEFAULT,
     scrollState: ScrollState = ScrollState(0),
     updateEmail: (email: String) -> Unit = {  },
@@ -58,50 +62,54 @@ fun LoginScreen(
 ) {
 
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-                .verticalScroll(scrollState),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Button(
-                modifier = buttonModifier,
-                onClick = { navigateToWelcome() }
-            ) {
+            item {
+                Button(
+                    modifier = buttonModifier,
+                    onClick = { navigateToWelcome() }
+                ) {
 
-                Text("Welcome")
-            }
+                    Text("Welcome")
+                }
 
-            Button(
-                modifier = buttonModifier,
-                onClick = { navigateToRegister() }
-            ) {
+                Button(
+                    modifier = buttonModifier,
+                    onClick = { navigateToRegister() }
+                ) {
 
-                Text("Register")
-            }
+                    Text("Register")
+                }
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email") },
-                value = state.email,
-                onValueChange = { updateEmail(it) }
-            )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth(),
+                    label = { Text("Email") },
+                    value = state.email,
+                    onValueChange = { updateEmail(it) }
+                )
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Password") },
-                value = state.password,
-                onValueChange = { updatePassword(it) }
-            )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth(),
+                    label = { Text("Password") },
+                    value = state.password,
+                    onValueChange = { updatePassword(it) }
+                )
 
-            OutlinedButton(
-                modifier = buttonModifier,
-                onClick = { login() }
-            ) {
+                OutlinedButton(
+                    modifier = buttonModifier,
+                    onClick = { login() }
+                ) {
 
-                Text("Login")
+                    Text("Login")
+                }
             }
         }
     }

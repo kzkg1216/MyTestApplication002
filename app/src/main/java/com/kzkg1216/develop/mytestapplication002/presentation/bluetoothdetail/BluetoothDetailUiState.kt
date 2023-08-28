@@ -1,17 +1,16 @@
-package com.kzkg1216.develop.mytestapplication002.presentation.bluetooth
+package com.kzkg1216.develop.mytestapplication002.presentation.bluetoothdetail
 
+import com.kzkg1216.develop.mytestapplication002.presentation.bluetooth.LeDevice
 import java.lang.Exception
 
-sealed class BluetoothUiState {
+sealed class BluetoothDetailUiState {
 
     data class Success(
-        val isScanning: Boolean,
         val devices: List<LeDevice>
-    ): BluetoothUiState() {
+    ): BluetoothDetailUiState() {
 
         companion object {
             val DEFAULT = Success(
-                isScanning = false,
                 devices = listOf()
             )
         }
@@ -19,5 +18,5 @@ sealed class BluetoothUiState {
 
     data class Error(
         val exception: Exception
-    ): BluetoothUiState()
+    ): BluetoothDetailUiState()
 }

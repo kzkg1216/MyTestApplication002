@@ -8,6 +8,7 @@ import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Intent
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BluetoothViewModel @Inject constructor(
-    private val bluetoothAdapter: BluetoothAdapter,
-    private val bluetoothLeScanner: BluetoothLeScanner
+    private val bluetoothAdapter: BluetoothAdapter
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(BluetoothUiState.Success.DEFAULT)
@@ -29,6 +29,10 @@ class BluetoothViewModel @Inject constructor(
 
     private val BluetoothAdapter.isDisabled: Boolean
         get() = !isEnabled
+
+    private val bluetoothLeScanner by lazy {
+        bluetoothAdapter.bluetoothLeScanner
+    }
 
     fun checkBluetooth(
         launcher: (intent: Intent) -> Unit
@@ -70,10 +74,9 @@ class BluetoothViewModel @Inject constructor(
                 }
             }
 
-            device?.let { bluetoothDevice ->
+            device?.let { _ ->
                 val leDevice = LeDevice(
-                    device = bluetoothDevice,
-                    name = name ?: "",
+                    name = name ?: "N/A",
                     address = address ?: "",
                     rssi = rssi.toString()
                 )
@@ -110,22 +113,40 @@ class BluetoothViewModel @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    fun startScanLeDevices() {
-        viewModelScope.launch {
-            Timber.d("LeScanner Start")
-            bluetoothLeScanner.startScan(scanFilters, scanSettings, leScanCallback)
-            delay(5000)
-            Timber.d("LeScanner Stop")
-            bluetoothLeScanner.stopScan(leScanCallback)
+    fun startScanLeDevices(toast: Toast) {
+        if (bluetoothAdapter.isDisabled) {
+            Timber.d("Bluetooth OFF")
+            toast.show()
+            return
+        }
+
+        if (!(uiState.value as BluetoothUiState.Success).isScanning) {
+            viewModelScope.launch {
+                Timber.d("LeScanner Start")
+                _uiState.value = (uiState.value as BluetoothUiState.Success).copy(isScanning = true)
+                bluetoothLeScanner?.startScan(scanFilters, scanSettings, leScanCallback)
+                delay(5000)
+                Timber.d("LeScanner Stop")
+                bluetoothLeScanner?.stopScan(leScanCallback)
+                _uiState.value = (uiState.value as BluetoothUiState.Success).copy(isScanning = false)
+            }
         }
     }
 
     @SuppressLint("MissingPermission")
-    fun stopScanLeDevices() {
-        viewModelScope.launch {
-            Timber.d("LeScanner Stop")
-            bluetoothLeScanner.stopScan(leScanCallback)
+    fun stopScanLeDevices(toast: Toast) {
+        if (bluetoothAdapter.isDisabled) {
+            Timber.d("Bluetooth OFF")
+            toast.show()
+            return
+        }
+
+        if ((uiState.value as BluetoothUiState.Success).isScanning && !bluetoothAdapter.isDisabled) {
+            viewModelScope.launch {
+                Timber.d("LeScanner Stop")
+                bluetoothLeScanner?.stopScan(leScanCallback)
+                _uiState.value = (uiState.value as BluetoothUiState.Success).copy(isScanning = false)
+            }
         }
     }
-
 }

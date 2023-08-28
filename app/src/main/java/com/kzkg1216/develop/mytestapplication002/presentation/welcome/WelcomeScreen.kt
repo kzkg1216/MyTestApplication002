@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -63,7 +64,10 @@ fun WelcomeScreenState(
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
-    buttonModifier: Modifier = modifier.fillMaxWidth().height(56.dp).padding(top = 8.dp),
+    buttonModifier: Modifier = modifier
+        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+        .fillMaxWidth()
+        .height(56.dp),
     state: WelcomeUiState.Success = WelcomeUiState.Success.DEFAULT,
     scrollState: ScrollState = ScrollState(0),
     navigateToDebug: () -> Unit = {  },
@@ -76,52 +80,52 @@ fun WelcomeScreen(
     if (!state.isLoading) {
 
         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-            Column(
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-                    .verticalScroll(scrollState),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Button(
-                    modifier = buttonModifier,
-                    onClick = { navigateToRegister() }
-                ) {
+                item {
+                    Button(
+                        modifier = buttonModifier,
+                        onClick = { navigateToRegister() }
+                    ) {
 
-                    Text("Register")
-                }
+                        Text("Register")
+                    }
 
-                Button(
-                    modifier = buttonModifier,
-                    onClick = { navigateToLogin() }
-                ) {
+                    Button(
+                        modifier = buttonModifier,
+                        onClick = { navigateToLogin() }
+                    ) {
 
-                    Text("Login")
-                }
+                        Text("Login")
+                    }
 
-                Button(
-                    modifier = buttonModifier,
-                    onClick = { navigateToDebug() }
-                ) {
+                    Button(
+                        modifier = buttonModifier,
+                        onClick = { navigateToDebug() }
+                    ) {
 
-                    Text("Debug")
-                }
+                        Text("Debug")
+                    }
 
-                Button(
-                    modifier = buttonModifier,
-                    onClick = { navigateToSettings() }
-                ) {
+                    Button(
+                        modifier = buttonModifier,
+                        onClick = { navigateToSettings() }
+                    ) {
 
-                    Text("Settings")
-                }
+                        Text("Settings")
+                    }
 
-                Button(
-                    modifier = buttonModifier,
-                    onClick = { navigateToBluetooth() }
-                ) {
+                    Button(
+                        modifier = buttonModifier,
+                        onClick = { navigateToBluetooth() }
+                    ) {
 
-                    Text("Bluetooth")
+                        Text("Bluetooth")
+                    }
                 }
             }
         }

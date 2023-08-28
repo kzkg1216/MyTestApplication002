@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -43,9 +44,9 @@ fun SettingsScreenState(
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     buttonModifier: Modifier = modifier
+        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
         .fillMaxWidth()
-        .height(56.dp)
-        .padding(top = 8.dp),
+        .height(56.dp),
     state: SettingsUiState.Success = SettingsUiState.Success.DEFAULT,
     scrollState: ScrollState = ScrollState(0),
     navigateToWelcome: () -> Unit = {  },
@@ -53,44 +54,42 @@ fun SettingsScreen(
 ) {
 
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-                .verticalScroll(scrollState),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Button(
-                modifier = buttonModifier,
-                onClick = { navigateToWelcome() }
-            ) {
-                Text(text = "Welcome")
-            }
+            item {
+                Button(
+                    modifier = buttonModifier,
+                    onClick = { navigateToWelcome() }
+                ) {
+                    Text(text = "Welcome")
+                }
 
-            Column(
-                modifier = modifier.fillMaxWidth().padding(vertical = 8.dp)
-            ) {
                 SettingsItem(
                     text = "Debug mode",
                     checkedState = state.isDebugging,
                     updateState = { setDebugMode(it) }
                 )
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Settings Screen!"
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = "Debug mode: ${state.isDebugging}"
+                )
             }
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Settings Screen!"
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = "Debug mode: ${state.isDebugging}"
-            )
         }
     }
 }
